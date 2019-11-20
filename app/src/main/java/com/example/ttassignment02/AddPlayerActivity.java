@@ -3,6 +3,7 @@ package com.example.ttassignment02;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,8 @@ public class AddPlayerActivity extends AppCompatActivity implements View.OnClick
 
     Button addPlayerNameButton;
 
+    private PlayerDB db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +28,9 @@ public class AddPlayerActivity extends AppCompatActivity implements View.OnClick
         addPlayerNameButton = (Button) findViewById(R.id.addPlayerBtn);
 
         addPlayerNameButton.setOnClickListener(this);
+
+        db = new PlayerDB(this);
+
     }
 
     @Override
@@ -32,6 +38,12 @@ public class AddPlayerActivity extends AppCompatActivity implements View.OnClick
         switch (view.getId()){
             case R.id.addPlayerBtn:
                 playerName = playerNameInput.getText().toString();
+                try {
+                    db.insertPlayer(playerName);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                playerNameInput.setText("");
                 showToast(playerName);
                 break;
         }
